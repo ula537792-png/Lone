@@ -1,4 +1,3 @@
--- STREAMING_CHUNK:Initializing Services and Anti-Duplicate Protection...
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
 local RunService = game:GetService("RunService")
@@ -7,7 +6,6 @@ local UserInputService = game:GetService("UserInputService")
 local Lighting = game:GetService("Lighting")
 local LocalPlayer = Players.LocalPlayer
 
--- Anti-duplicate GUI protection & cleanup old functions/drawings
 if getgenv().InveriumLoneSurvival_Connections then
     for _, conn in ipairs(getgenv().InveriumLoneSurvival_Connections) do
         pcall(function() conn:Disconnect() end)
@@ -28,7 +26,6 @@ for _, child in ipairs(CoreGui:GetChildren()) do
     end
 end
 
--- STREAMING_CHUNK:Defining Settings Tables...
 local ESP_SETTINGS = {
     Enabled = false,
     Chams = false,
@@ -144,7 +141,6 @@ local TEAM_MEMBERS = {}
 local isAiming = false
 local lockedTarget = nil
 
--- STREAMING_CHUNK:Setting up Aim Connections...
 local connAimBegin = UserInputService.InputBegan:Connect(function(input, gameProcessed)
     if not gameProcessed and AIM_SETTINGS.Enabled then
         if input.UserInputType == AIM_SETTINGS.Key or input.KeyCode == AIM_SETTINGS.Key then
@@ -171,7 +167,6 @@ local connAimEnd = UserInputService.InputEnded:Connect(function(input, gameProce
 end)
 table.insert(getgenv().InveriumLoneSurvival_Connections, connAimEnd)
 
--- STREAMING_CHUNK:Creating Main GUI Layout...
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "InveriumLoneSurvival"
 ScreenGui.Parent = CoreGui
@@ -300,7 +295,6 @@ local btnAim = createTabButton("AimTabBtn", "AIM", 0)
 local btnPlayer = createTabButton("PlayerTabBtn", "PLAYER", 0)
 local btnTeam = createTabButton("TeamTabBtn", "TEAMS", 0)
 
--- STREAMING_CHUNK:Creating Category Containers...
 local function createCategoryBox(parent, name, posX, posY, sizeX, sizeY)
     local box = Instance.new("ScrollingFrame")
     box.Size = UDim2.new(0, sizeX, 0, sizeY)
@@ -397,10 +391,9 @@ TeamContainer.BackgroundTransparency = 1
 TeamContainer.Visible = false
 TeamContainer.Parent = ContentContainer
 
-local TeamMainBox = createCategoryBox(TeamContainer, "Team Manager (Игроки / Друзья)", 10, 10, 620, 360)
+local TeamMainBox = createCategoryBox(TeamContainer, "Team Manager (Players / Friends)", 10, 10, 620, 360)
 TeamMainBox.CanvasSize = UDim2.new(0, 0, 0, 0)
 
--- STREAMING_CHUNK:Building Team HUD and Player List UI...
 local TeamHUDGui = Instance.new("ScreenGui")
 TeamHUDGui.Name = "InveriumTeamHUD"
 TeamHUDGui.Parent = CoreGui
@@ -423,7 +416,7 @@ HUDTitle.Size = UDim2.new(1, -10, 0, 25)
 HUDTitle.Position = UDim2.new(0, 10, 0, 5)
 HUDTitle.BackgroundTransparency = 1
 HUDTitle.Font = Enum.Font.GothamBold
-HUDTitle.Text = "ТИМ"
+HUDTitle.Text = "TEAM"
 HUDTitle.TextColor3 = Color3.fromRGB(50, 255, 50)
 HUDTitle.TextSize = 12
 HUDTitle.TextXAlignment = Enum.TextXAlignment.Left
@@ -470,7 +463,7 @@ searchInputBar.Size = UDim2.new(1, -24, 0, 30)
 searchInputBar.Position = UDim2.new(0, 12, 0, 38)
 searchInputBar.BackgroundColor3 = Color3.fromRGB(45, 40, 60)
 searchInputBar.Font = Enum.Font.Gotham
-searchInputBar.PlaceholderText = "Поиск по имени игрока..."
+searchInputBar.PlaceholderText = "Search by player name..."
 searchInputBar.Text = ""
 searchInputBar.TextColor3 = Color3.fromRGB(255, 255, 255)
 searchInputBar.PlaceholderColor3 = Color3.fromRGB(150, 140, 170)
@@ -535,7 +528,7 @@ local function refreshTeamPlayerList()
                 pBtn.Position = UDim2.new(0, 0, 0, yPos)
                 pBtn.BackgroundColor3 = inTeam and Color3.fromRGB(30, 60, 35) or Color3.fromRGB(40, 35, 55)
                 pBtn.Font = Enum.Font.GothamMedium
-                pBtn.Text = "  " .. plr.Name .. (isFriend and " [ДРУГ]" or "") .. (inTeam and " [В ТИМЕ]" or "")
+                pBtn.Text = "  " .. plr.Name .. (isFriend and " [FRIEND]" or "") .. (inTeam and " [IN TEAM]" or "")
                 pBtn.TextColor3 = inTeam and Color3.fromRGB(50, 255, 50) or (isFriend and Color3.fromRGB(100, 200, 255) or Color3.fromRGB(200, 200, 210))
                 pBtn.TextSize = 12
                 pBtn.TextXAlignment = Enum.TextXAlignment.Left
@@ -580,7 +573,6 @@ table.insert(getgenv().InveriumLoneSurvival_Connections, connSearch)
 
 refreshTeamPlayerList()
 
--- STREAMING_CHUNK:Configuring SideBar and Tab Switcher...
 local iconButtons = {}
 for i, icon in ipairs(icons) do
     local iconBtn = Instance.new("TextButton")
@@ -659,7 +651,6 @@ AimContainer.Visible = false
 PlayerContainer.Visible = false
 TeamContainer.Visible = false
 
--- STREAMING_CHUNK:Setting up Keybinds Manager UI...
 local KeybindsGui = Instance.new("ScreenGui")
 KeybindsGui.Name = "InveriumKeybinds"
 KeybindsGui.Parent = CoreGui
@@ -682,7 +673,7 @@ KBTitle.Size = UDim2.new(1, -15, 0, 25)
 KBTitle.Position = UDim2.new(0, 10, 0, 5)
 KBTitle.BackgroundTransparency = 1
 KBTitle.Font = Enum.Font.GothamBold
-KBTitle.Text = "Бинд менеджер"
+KBTitle.Text = "Bind Manager"
 KBTitle.TextColor3 = Color3.fromRGB(180, 130, 230)
 KBTitle.TextSize = 11
 KBTitle.TextXAlignment = Enum.TextXAlignment.Left
@@ -742,7 +733,6 @@ local connStatusUpdate = RunService.RenderStepped:Connect(function()
 end)
 table.insert(getgenv().InveriumLoneSurvival_Connections, connStatusUpdate)
 
--- STREAMING_CHUNK:Creating UI Component Builders...
 local function createToggle(parent, name, yPos, callback)
     local toggleFrame = Instance.new("Frame")
     toggleFrame.Size = UDim2.new(1, -20, 0, 35)
@@ -1046,7 +1036,6 @@ local function createIntSlider(parent, name, yPos, min, max, default, callback)
     table.insert(getgenv().InveriumLoneSurvival_Connections, connChanged)
 end
 
--- STREAMING_CHUNK:Populating Settings Tab Controls...
 createSlider(SettingsLeftBox, "Bind Manager Transparency", 40, 0, 1, 0.35, function(v)
     MENU_SETTINGS.BindManagerTransparency = v
     KeybindsMenu.BackgroundTransparency = v
@@ -1067,18 +1056,18 @@ createToggle(SettingsLeftBox, "Visible Team HUD", 195, function(v)
     TeamHUDFrame.Visible = v
 end)
 
-createToggle(SettingsRightBox, "FullBright (Фулл Брайт)", 40, function(v)
+createToggle(SettingsRightBox, "FullBright", 40, function(v)
     PLAYER_SETTINGS.FullBright = v
 end)
 
-createToggle(SettingsRightBox, "Anti-Fog (Убрать туман)", 85, function(v)
+createToggle(SettingsRightBox, "Anti-Fog", 85, function(v)
     PLAYER_SETTINGS.AntiFog = v
     if not v then
         Lighting.FogEnd = 100000
     end
 end)
 
-createToggle(SettingsRightBox, "RTX Мод (Кинематографичная)", 130, function(v)
+createToggle(SettingsRightBox, "RTX Mod (Cinematic)", 130, function(v)
     PLAYER_SETTINGS.RTXGraphics = v
     pcall(function()
         if v then
@@ -1138,7 +1127,6 @@ createToggle(SettingsRightBox, "RTX Мод (Кинематографичная)"
     end)
 end)
 
--- STREAMING_CHUNK:Populating Visuals Tab Controls...
 createToggle(LeftBox, "ESP Master Toggle", 40, function(v) ESP_SETTINGS.Enabled = v end)
 createToggle(LeftBox, "Chams", 85, function(v) ESP_SETTINGS.Chams = v end)
 createToggle(LeftBox, "Boxes", 130, function(v) ESP_SETTINGS.Boxes = v end)
@@ -1148,7 +1136,6 @@ createToggle(LeftBox, "Tracers", 265, function(v) ESP_SETTINGS.Tracers = v end)
 createToggle(LeftBox, "Look Direction", 310, function(v) ESP_SETTINGS.LookDirection = v end)
 createToggle(LeftBox, "Visible Check (Red/Blue)", 355, function(v) ESP_SETTINGS.VisibleCheck = v end)
 
--- Added Died ESP Controls under Visuals Tab (RightBox)
 local diedEspHeader = Instance.new("TextLabel")
 diedEspHeader.Size = UDim2.new(1, -20, 0, 25)
 diedEspHeader.Position = UDim2.new(0, 10, 0, 180)
@@ -1205,17 +1192,16 @@ for i, colData in ipairs(colors) do
     table.insert(getgenv().InveriumLoneSurvival_Connections, connCol)
 end
 
--- STREAMING_CHUNK:Populating Crates Tab Controls...
-createToggle(CratesLeftBox, "1 esp airdrop", 40, function(v) CRATES_SETTINGS.Airdrop = v end)
-createToggle(CratesLeftBox, "1 Food Crate", 85, function(v) CRATES_SETTINGS.FoodCrate = v end)
-createToggle(CratesLeftBox, "2 Large Crate", 130, function(v) CRATES_SETTINGS.LargeCrate = v end)
-createToggle(CratesLeftBox, "3 Medbag", 175, function(v) CRATES_SETTINGS.Medbag = v end)
-createToggle(CratesLeftBox, "4 Military Crate", 220, function(v) CRATES_SETTINGS.MilitaryCrate = v end)
-createToggle(CratesLeftBox, "5 SNTech Crate", 265, function(v) CRATES_SETTINGS.SNTechCrate = v end)
-createToggle(CratesLeftBox, "6 Tool Box", 310, function(v) CRATES_SETTINGS.ToolBox = v end)
-createToggle(CratesLeftBox, "7 Vault", 355, function(v) CRATES_SETTINGS.Vault = v end)
-createToggle(CratesLeftBox, "8 Diesel Barrel", 400, function(v) CRATES_SETTINGS.DieselBarrel = v end)
-createToggle(CratesLeftBox, "9 Locked Crate", 445, function(v) CRATES_SETTINGS.LockedCrate = v end)
+createToggle(CratesLeftBox, "Airdrop ESP", 40, function(v) CRATES_SETTINGS.Airdrop = v end)
+createToggle(CratesLeftBox, "Food Crate", 85, function(v) CRATES_SETTINGS.FoodCrate = v end)
+createToggle(CratesLeftBox, "Large Crate", 130, function(v) CRATES_SETTINGS.LargeCrate = v end)
+createToggle(CratesLeftBox, "Medbag", 175, function(v) CRATES_SETTINGS.Medbag = v end)
+createToggle(CratesLeftBox, "Military Crate", 220, function(v) CRATES_SETTINGS.MilitaryCrate = v end)
+createToggle(CratesLeftBox, "SNTech Crate", 265, function(v) CRATES_SETTINGS.SNTechCrate = v end)
+createToggle(CratesLeftBox, "Tool Box", 310, function(v) CRATES_SETTINGS.ToolBox = v end)
+createToggle(CratesLeftBox, "Vault", 355, function(v) CRATES_SETTINGS.Vault = v end)
+createToggle(CratesLeftBox, "Diesel Barrel", 400, function(v) CRATES_SETTINGS.DieselBarrel = v end)
+createToggle(CratesLeftBox, "Locked Crate", 445, function(v) CRATES_SETTINGS.LockedCrate = v end)
 
 createToggle(CratesRightBox, "Crates Names & Distance", 40, function(v) CRATES_SETTINGS.Names = v end)
 createToggle(CratesRightBox, "Crates Chams", 85, function(v) CRATES_SETTINGS.Chams = v end)
@@ -1224,11 +1210,10 @@ createIntSlider(CratesRightBox, "Crates Max Distance", 130, 500, 10000, 3000, fu
     CRATES_SETTINGS.MaxDistance = v
 end)
 
--- STREAMING_CHUNK:Populating Resources Tab Controls...
 createToggle(ResourcesLeftBox, "Brimstone Ore", 40, function(v) RESOURCES_SETTINGS.BrimstoneOre = v end)
 createToggle(ResourcesLeftBox, "Iron Ore", 85, function(v) RESOURCES_SETTINGS.IronOre = v end)
 createToggle(ResourcesLeftBox, "Stone Ore", 130, function(v) RESOURCES_SETTINGS.StoneOre = v end)
-createToggle(ResourcesLeftBox, "ClothPlant", 175, function(v) RESOURCES_SETTINGS.ClothPlant = v end)
+createToggle(ResourcesLeftBox, "Cloth Plant", 175, function(v) RESOURCES_SETTINGS.ClothPlant = v end)
 
 createToggle(ResourcesRightBox, "Resources Names & Distance", 40, function(v) RESOURCES_SETTINGS.Names = v end)
 createToggle(ResourcesRightBox, "Resources Chams", 85, function(v) RESOURCES_SETTINGS.Chams = v end)
@@ -1237,7 +1222,6 @@ createIntSlider(ResourcesRightBox, "Resources Max Distance", 130, 500, 10000, 30
     RESOURCES_SETTINGS.MaxDistance = v
 end)
 
--- STREAMING_CHUNK:Populating Raids Tab Controls...
 createToggle(RaidsLeftBox, "BuiltObjects X-Ray", 40, function(v)
     RAIDS_SETTINGS.XRayEnabled = v
 end)
@@ -1250,10 +1234,9 @@ createSlider(RaidsRightBox, "X-Ray Transparency", 40, 0, 1, 0.5, function(v)
     RAIDS_SETTINGS.Transparency = v
 end)
 
--- STREAMING_CHUNK:Populating Aim Tab Controls...
 createToggle(AimLeftBox, "Aimbot Enable", 40, function(v) AIM_SETTINGS.Enabled = v end)
 createKeybind(AimLeftBox, "Aim Key", 85, Enum.UserInputType.MouseButton2, true, function(v) AIM_SETTINGS.Key = v end)
-createToggle(AimLeftBox, "Aim Hold Mode (Зажатие)", 130, function(v) AIM_SETTINGS.HoldMode = v end)
+createToggle(AimLeftBox, "Aim Hold Mode", 130, function(v) AIM_SETTINGS.HoldMode = v end)
 createSlider(AimLeftBox, "Smoothness (0-1)", 175, 0, 1, 0.05, function(v) AIM_SETTINGS.Smoothness = v end)
 
 createDropdown(AimLeftBox, "Aim Target Bone", 230, {"UpperTorso", "Head", "HumanoidRootPart"}, "UpperTorso", function(v)
@@ -1264,7 +1247,7 @@ createToggle(AimLeftBox, "Visible Check", 275, function(v) AIM_SETTINGS.VisibleC
 createKeybind(AimLeftBox, "Visible Check Key", 320, Enum.KeyCode.F, false, function(v) AIM_SETTINGS.VisibleCheckKey = v end)
 createIntSlider(AimLeftBox, "Aim Range", 365, 100, 5000, 2000, function(v) AIM_SETTINGS.Range = v end)
 
-createToggle(AimLeftBox, "No Bullet Drop (Компенсация падения)", 420, function(v) AIM_SETTINGS.NoBulletDrop = v end)
+createToggle(AimLeftBox, "No Bullet Drop", 420, function(v) AIM_SETTINGS.NoBulletDrop = v end)
 
 createToggle(AimRightBox, "Show FOV", 40, function(v) AIM_SETTINGS.ShowFOV = v end)
 createIntSlider(AimRightBox, "FOV Radius", 85, 20, 600, 250, function(v) AIM_SETTINGS.FOVRadius = v end)
@@ -1309,8 +1292,7 @@ for i, colData in ipairs(colors) do
     table.insert(getgenv().InveriumLoneSurvival_Connections, connAimCol)
 end
 
--- STREAMING_CHUNK:Populating Player Tab Controls...
-createToggle(PlayerLeftBox, "Enable FOV (Включить кастомный FOV)", 40, function(v)
+createToggle(PlayerLeftBox, "Enable Custom FOV", 40, function(v)
     PLAYER_SETTINGS.EnableFOV = v
     if not v and Workspace.CurrentCamera then
         Workspace.CurrentCamera.FieldOfView = 70
@@ -1369,7 +1351,6 @@ local connPlayerLoop = RunService.RenderStepped:Connect(function()
 end)
 table.insert(getgenv().InveriumLoneSurvival_Connections, connPlayerLoop)
 
--- STREAMING_CHUNK:Setting up FOV Circle and Visibility Checks...
 local fovCircle = Drawing.new("Circle")
 fovCircle.Visible = false
 fovCircle.Thickness = 1
@@ -1412,7 +1393,6 @@ local function getNoBulletDropPosition(cameraPos, targetPart)
     return basePos + Vector3.new(0, correction, 0)
 end
 
--- STREAMING_CHUNK:Hitboxes Loop Implementation...
 local cachedModelsForHitbox = {}
 local lastHitboxUpdate = 0
 
@@ -1538,7 +1518,6 @@ local connHitboxes = RunService.Heartbeat:Connect(function()
 end)
 table.insert(getgenv().InveriumLoneSurvival_Connections, connHitboxes)
 
--- STREAMING_CHUNK:Aimbot Render Loop...
 local connRender = RunService.Heartbeat:Connect(function()
     local camera = Workspace.CurrentCamera
     if not camera then return end
@@ -1642,7 +1621,6 @@ local connInsert = UserInputService.InputBegan:Connect(function(input, gameProce
 end)
 table.insert(getgenv().InveriumLoneSurvival_Connections, connInsert)
 
--- STREAMING_CHUNK:Universal Players ESP System...
 local activeEspCache = {}
 
 local function removeEspCache(model)
@@ -1843,7 +1821,6 @@ local connUniversalESP = RunService.RenderStepped:Connect(function()
 end)
 table.insert(getgenv().InveriumLoneSurvival_Connections, connUniversalESP)
 
--- STREAMING_CHUNK:Died ESP (Backpack) System Implementation...
 local activeDiedEspCache = {}
 
 local function removeDiedEspCache(obj)
@@ -1940,7 +1917,6 @@ local connDiedESP = RunService.RenderStepped:Connect(function()
 end)
 table.insert(getgenv().InveriumLoneSurvival_Connections, connDiedESP)
 
--- STREAMING_CHUNK:Crates & Airdrop ESP System Implementation...
 local activeCratesCache = {}
 
 local function removeCrateCache(obj)
@@ -2122,7 +2098,6 @@ local connCratesESP = RunService.RenderStepped:Connect(function()
 end)
 table.insert(getgenv().InveriumLoneSurvival_Connections, connCratesESP)
 
--- STREAMING_CHUNK:Resources & Plants ESP System Implementation...
 local activeResourcesCache = {}
 local cachedValidResources = {}
 local lastResourcesScan = 0
@@ -2239,7 +2214,6 @@ local connResourcesESP = RunService.RenderStepped:Connect(function()
 end)
 table.insert(getgenv().InveriumLoneSurvival_Connections, connResourcesESP)
 
--- STREAMING_CHUNK:Raids X-Ray System Implementation (Optimized without Lag)...
 local originalTransparencyMap = {}
 local cachedXRayParts = {}
 local lastXRayUpdate = 0
